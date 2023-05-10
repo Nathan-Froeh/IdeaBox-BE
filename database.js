@@ -7,5 +7,15 @@ const pool = mysql.createPool({
   database: 'ideabox_be'
 }).promise()
 
-const [rows] = await pool.query("SELECT * FROM ideas");
-console.log('rows', rows)
+async function getNotes() {
+  const [rows] = await pool.query("SELECT * FROM ideas");
+  return rows;
+}
+
+async function getNote(id) {
+  const [rows] = await pool.query("SELECT * FROM ideas WHERE id = ?", [id]);
+  return rows[0];
+}
+
+const note = await getNote(1);
+console.log('note', note)
