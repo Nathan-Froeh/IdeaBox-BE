@@ -26,10 +26,22 @@ export async function createNote(title, content) {
   return getNote(id);
 }
 
+export async function updateNote(id, title, content) {
+  await pool.query(`
+  UPDATE ideas
+  SET title = ?, content = ?
+  WHERE id = ?;
+  `, [title, content, id])
+  return getNote(id);
+}
+
 // const stuff = await createNote('some stuff', 'the description')
 // console.log('stuff', stuff)
 
-const note = await getNote(1);
-console.log('note', note)
+const update = await updateNote(3, 'title', 'content')
+console.log('updated', update)
+
+// const note = await getNote(1);
+// console.log('note', note)
 const notes = await getNotes();
 console.log('notes', notes)
