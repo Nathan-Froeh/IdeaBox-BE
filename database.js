@@ -7,15 +7,29 @@ const pool = mysql.createPool({
   database: 'ideabox_be'
 }).promise()
 
-async function getNotes() {
+export async function getNotes() {
   const [rows] = await pool.query("SELECT * FROM ideas");
   return rows;
 }
 
-async function getNote(id) {
+export async function getNote(id) {
   const [rows] = await pool.query("SELECT * FROM ideas WHERE id = ?", [id]);
   return rows[0];
 }
 
+export async function createNote(title, content) {
+  const [result] = await pool.query(`
+  INSERT INTO ideas (title, content)
+  VALUES( ?, ? )
+  `, [title, content])
+  const id = result.insertId
+  return getNote(id);
+}
+
+// const stuff = await createNote('some stuff', 'the description')
+// console.log('stuff', stuff)
+
 const note = await getNote(1);
 console.log('note', note)
+const notes = await getNotes();
+console.log('notes', notes)
