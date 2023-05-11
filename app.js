@@ -27,6 +27,13 @@ app.post("/notes", async (req, res) => {
   res.status(201).send(note)
 })
 
+app.put("/notes/:id", async (req, res) => {
+  const { title, content } = req.body;
+  const id = req.params.id;
+  const note = await updateNote(id, title, content);
+  res.send(note)
+})
+
 app.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).send('Something broke!')
