@@ -35,6 +35,13 @@ export async function updateNote(id, title, content) {
   return getNote(id);
 }
 
+export async function deleteNote(id) {
+  await pool.query(`
+    DELETE FROM ideas WHERE id = ?;
+  `, [id])
+  return;
+}
+
 // const stuff = await createNote('some stuff', 'the description')
 // console.log('stuff', stuff)
 

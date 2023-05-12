@@ -3,7 +3,8 @@ import {
   getNotes,
   getNote,
   createNote,
-  updateNote
+  updateNote,
+  deleteNote
 } from './database.js';
 
 const app = express();
@@ -32,6 +33,12 @@ app.put("/notes/:id", async (req, res) => {
   const id = req.params.id;
   const note = await updateNote(id, title, content);
   res.send(note)
+})
+
+app.delete("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  const request = await deleteNote(id);
+  res.status(204).send(request)
 })
 
 app.use((err, req, res, next) => {
