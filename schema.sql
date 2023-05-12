@@ -10,4 +10,5 @@ CREATE TABLE ideas (
 
 INSERT INTO ideas (title, content)
 VALUES 
-('dummy title 1', 'dummy description 1');
+('dummy title 1', 'dummy description 1'),
+('dummy title 2', 'dummy content 2');
