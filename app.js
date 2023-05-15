@@ -18,8 +18,19 @@ app.get("/notes", async (req, res) => {
 
 app.get("/notes/:id", async (req, res) => {
   const id = req.params.id;
-  const note = await getNote(id);
-  res.send(note)
+  if(id && typeof(id) !== 'Number') {
+    res.status(400).send('ID must be type: Number')
+  }
+  await getNote(id).then(note => {
+    console.log('note', note)
+    if(note) {
+      res.send(note)
+    } else {
+      res.status(404).send("Note not found.")
+    }
+  }).catch(error => {
+    res.status(500).send(error)
+  });
 })
 
 app.post("/notes", async (req, res) => {
