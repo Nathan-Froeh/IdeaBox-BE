@@ -17,9 +17,9 @@ app.get("/notes", async (req, res) => {
 })
 
 app.get("/notes/:id", async (req, res) => {
-  const id = req.params.id;
-  if(id && typeof(id) !== 'Number') {
-    res.status(400).send('Error, ID must be type: Number')
+  const id = Number(req.params.id);
+  if(!id) {
+    res.status(400).send('Error, ID is required')
   }
   await getNote(id).then(note => {
     console.log('note', note)
@@ -37,9 +37,9 @@ app.post("/notes", async (req, res) => {
   const { title, content } = req.body;
   if(!title || !content) {
     res.status(400).send('Error, Title and Content are required')
-  } else if (typeof(title) !== string) {
+  } else if (typeof(title) !== 'string') {
     res.status(400).send('Error, Title must be a string')
-  } else if (typeof(content) !== string) {
+  } else if (typeof(content) !== 'string') {
     res.status(400).send('Error, Content must be a string')
   }
   const note = await createNote(title, content)
@@ -48,13 +48,31 @@ app.post("/notes", async (req, res) => {
 
 app.put("/notes/:id", async (req, res) => {
   const { title, content } = req.body;
-  const id = req.params.id;
+  console.log('some stuff', typeof(title), typeof(content))
+  if(!title || !content) {
+    res.status(400).send('Error, Title and Content are required')
+  } else if (typeof(title) !== 'string') {
+    res.status(400).send('Error, Title must be a string')
+  } else if (typeof(content) !== 'string') {
+    res.status(400).send('Error, Content must be a string')
+  }
+  const id = Number(req.params.id);
+  if(!id) {
+    res.status(400).send('Error, ID is required')
+  }
   const note = await updateNote(id, title, content);
-  res.send(note)
+  if(note) {
+    res.send(note)
+  } else {
+    res.status(404).send('Error, Note could not be found')
+  }
 })
 
 app.delete("/notes/:id", async (req, res) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
+  if(!id) {
+    res.status(400).send('Error, ID is required')
+  }
   const request = await deleteNote(id);
   res.status(204).send(request)
 })
